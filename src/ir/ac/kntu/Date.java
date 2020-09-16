@@ -1,6 +1,6 @@
 package ir.ac.kntu;
 
-public class Date {
+public class Date implements Comparable<Date> {
     private int year;
     private int month;
     private int day;
@@ -85,5 +85,22 @@ public class Date {
     public String toString() {
         return year + "/" + month + "/" + day + "\t" +
                 String.format("%02d", hour) + ":" + String.format("%02d", minute);
+    }
+
+    @Override
+    public int compareTo(Date date) {
+        if (this.year != date.year) {
+            return this.year - date.year;
+        }
+        if (this.month != date.month) {
+            return this.month - date.month;
+        }
+        if (this.day != date.day) {
+            return this.day - date.day;
+        }
+        if (this.hour != date.hour) {
+            return this.hour - date.hour;
+        }
+        return this.minute - date.minute;
     }
 }
