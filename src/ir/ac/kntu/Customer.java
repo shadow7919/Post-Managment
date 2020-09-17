@@ -9,22 +9,26 @@ public class Customer implements Serializable {
     private int id;
     private Company company;
 
-    public void menu(Company company) {
+    public Customer(Company company) {
         this.company = company;
+    }
+
+    public void menu() {
         while (true) {
+            Customer customer = new Customer(company);
             printMenu();
             switch (ScannerHelper.nextInt(5)) {
                 case 1:
-                    add();
+                    customer.add();
                     break;
                 case 2:
-                    edit();
+                    customer.edit();
                     break;
                 case 3:
-                    remove();
+                    customer.remove();
                     break;
                 case 4:
-                    show();
+                    customer.show();
                     break;
                 case 5:
                     return;
@@ -53,9 +57,10 @@ public class Customer implements Serializable {
     }
 
     private void remove() {
-        System.out.print("id : ");
-        this.id = ScannerHelper.nextInt();
-        company.remove(this);
+        Customer customer = getCustomer();
+        if (customer != null) {
+            company.remove(customer);
+        }
     }
 
     private void edit() {
@@ -67,10 +72,12 @@ public class Customer implements Serializable {
             switch (ScannerHelper.nextInt(3)) {
                 case 1:
                     System.out.print("new Name : ");
+                    ScannerHelper.getInstance().nextLine();
                     customer.name = ScannerHelper.getInstance().nextLine();
                     break;
                 case 2:
                     System.out.print("new Last Name : ");
+                    ScannerHelper.getInstance().nextLine();
                     customer.lastName = ScannerHelper.getInstance().nextLine();
                     break;
                 case 3:
@@ -87,7 +94,7 @@ public class Customer implements Serializable {
         this.id = ScannerHelper.nextInt();
         for (Customer customer : company.getCustomers()) {
             if (this.equals(customer)) {
-                return this;
+                return customer;
             }
         }
         System.out.println("This id is not registered");
@@ -95,11 +102,8 @@ public class Customer implements Serializable {
     }
 
     private void show() {
-//        Customer customer = getCustomer();
-//        if (customer != null) {
-//            System.out.println(customer);
-//        }
-        for (Customer customer : company.getCustomers()) {
+        Customer customer = getCustomer();
+        if (customer != null) {
             System.out.println(customer);
         }
     }
