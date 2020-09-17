@@ -46,8 +46,12 @@ public class Date implements Comparable<Date> {
 
     private int setDay() {
         while (true) {
-            int input = ScannerHelper.nextInt(31);
-            if (this.month > 7 && input == 31) {
+            int input = ScannerHelper.nextInt();
+            if (this.month < 7 && input > 31) {
+                System.out.println("In first half of year maximum day is 31");
+                continue;
+            }
+            if (this.month >= 7 && input > 30) {
                 System.out.println("In second half of year maximum day is 30");
                 continue;
             }
