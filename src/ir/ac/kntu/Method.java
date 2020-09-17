@@ -1,7 +1,8 @@
 package ir.ac.kntu;
 
 public enum Method {
-    AIR(2), LAND(1), SEA(1.5);
+    LAND(1), SEA(1.5), AIR(2),
+    ;
     private final double multiplier;
 
     Method(double multiplier) {

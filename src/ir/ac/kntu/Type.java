@@ -1,7 +1,7 @@
 package ir.ac.kntu;
 
 public enum Type {
-    Normal(1), custom(2);
+    NORMAL(1), CUSTOM(2);
     private final int multiplier;
 
     Type(int multiplier) {
