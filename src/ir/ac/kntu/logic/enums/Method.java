@@ -1,8 +1,9 @@
-package ir.ac.kntu;
+package ir.ac.kntu.logic.enums;
+
+import ir.ac.kntu.util.ScannerHelper;
 
 public enum Method {
-    LAND(1), SEA(1.5), AIR(2),
-    ;
+    LAND(1), SEA(1.5), AIR(2);
     private final double multiplier;
 
     Method(double multiplier) {

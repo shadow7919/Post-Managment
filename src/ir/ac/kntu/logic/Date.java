@@ -1,6 +1,10 @@
-package ir.ac.kntu;
+package ir.ac.kntu.logic;
 
-public class Date implements Comparable<Date> {
+import ir.ac.kntu.util.ScannerHelper;
+
+import java.io.Serializable;
+
+public class Date implements Comparable<Date>, Serializable {
     private int year;
     private int month;
     private int day;
@@ -63,15 +67,31 @@ public class Date implements Comparable<Date> {
         }
     }
 
+    public static long howManyDays(Date date) {
+        long number = 0;
+        number += (date.year - 1) / 4;
+        number += (date.year - 1) * 365;
+        if (date.month < 7) {
+            number += (date.month - 1) * 31;
+        } else {
+            number += (6 * 31) + ((date.month - 7) * 30);
+        }
+        number += date.day;
+        return number;
+    }
+
+    public static int compareDates(Date first, Date second) {
+        return (int) (howManyDays(first) - howManyDays(second));
+    }
+
     private boolean isLeapYear(int year) {
         double a = 0.025;
         double b = 266;
         double leapDays0, leapDays1;
         int frac0, frac1;
         if (year > 0) {
-            leapDays0 = ((year + 38) % 2820) * 0.24219 + a;  //0.24219 ~ extra days of one year
-            leapDays1 = ((year + 39) % 2820) * 0.24219 + a;  //38 days is the difference of epoch to
-            //2820-year cycle
+            leapDays0 = ((year + 38) % 2820) * 0.24219 + a;
+            leapDays1 = ((year + 39) % 2820) * 0.24219 + a;
         } else if (year < 0) {
             leapDays0 = ((year + 39) % 2820) * 0.24219 + a;
             leapDays1 = ((year + 40) % 2820) * 0.24219 + a;
@@ -93,14 +113,8 @@ public class Date implements Comparable<Date> {
 
     @Override
     public int compareTo(Date date) {
-        if (this.year != date.year) {
-            return this.year - date.year;
-        }
-        if (this.month != date.month) {
-            return this.month - date.month;
-        }
-        if (this.day != date.day) {
-            return this.day - date.day;
+        if (compareDates(this, date) != 0) {
+            return compareDates(this, date);
         }
         if (this.hour != date.hour) {
             return this.hour - date.hour;

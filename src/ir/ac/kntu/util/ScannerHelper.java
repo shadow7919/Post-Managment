@@ -1,4 +1,4 @@
-package ir.ac.kntu;
+package ir.ac.kntu.util;
 
 import java.util.Scanner;
 

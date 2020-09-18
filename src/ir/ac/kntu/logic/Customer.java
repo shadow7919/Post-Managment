@@ -1,23 +1,28 @@
-package ir.ac.kntu;
+package ir.ac.kntu.logic;
+
+import ir.ac.kntu.logic.enums.Type;
+import ir.ac.kntu.util.Menu;
+import ir.ac.kntu.util.ScannerHelper;
 
 import java.io.Serializable;
-import java.util.Objects;
+import java.util.*;
 
 public class Customer implements Serializable {
     private String name;
     private String lastName;
     private int id;
+    private final Map<Product, Type> products;
     private Company company;
 
-    public Customer(Company company) {
-        this.company = company;
+    public Customer() {
+        products = new HashMap<>();
     }
 
-    public void menu() {
+    public void menu(Company company) {
         while (true) {
-            Customer customer = new Customer(company);
-            printMenu();
-            switch (ScannerHelper.nextInt(5)) {
+            Customer customer = new Customer();
+            customer.company = company;
+            switch (Menu.printCustomerMenu()) {
                 case 1:
                     customer.add();
                     break;
@@ -35,14 +40,6 @@ public class Customer implements Serializable {
                 default:
             }
         }
-    }
-
-    private void printMenu() {
-        System.out.println("1 --> Add customer");
-        System.out.println("2 --> Edit customer");
-        System.out.println("3 --> remove customer");
-        System.out.println("4 --> Show customer");
-        System.out.println("5 --> Back");
     }
 
     private void add() {
@@ -66,23 +63,27 @@ public class Customer implements Serializable {
     private void edit() {
         Customer customer = getCustomer();
         if (customer != null) {
-            System.out.println("1 --> Name ");
-            System.out.println("2 --> Last name ");
-            System.out.println("3 --> Id ");
-            switch (ScannerHelper.nextInt(3)) {
+            switch (Menu.printEditMenu()) {
                 case 1:
-                    System.out.print("new Name : ");
                     ScannerHelper.getInstance().nextLine();
+                    System.out.print("new Name : ");
                     customer.name = ScannerHelper.getInstance().nextLine();
                     break;
                 case 2:
-                    System.out.print("new Last Name : ");
                     ScannerHelper.getInstance().nextLine();
+                    System.out.print("new Last Name : ");
                     customer.lastName = ScannerHelper.getInstance().nextLine();
                     break;
                 case 3:
                     System.out.print("new Id : ");
-                    customer.id = ScannerHelper.nextInt();
+                    int id = ScannerHelper.nextInt();
+                    for (Customer customer1 : company.getCustomers()) {
+                        if (customer1.id == id) {
+                            System.out.println("This id is been registered");
+                            return;
+                        }
+                    }
+                    customer.id = id;
                     break;
                 default:
             }
@@ -91,9 +92,9 @@ public class Customer implements Serializable {
 
     public Customer getCustomer() {
         System.out.print("id : ");
-        this.id = ScannerHelper.nextInt();
+        int id = ScannerHelper.nextInt();
         for (Customer customer : company.getCustomers()) {
-            if (this.equals(customer)) {
+            if (customer.id == id) {
                 return customer;
             }
         }
@@ -106,6 +107,31 @@ public class Customer implements Serializable {
         if (customer != null) {
             System.out.println(customer);
         }
+    }
+
+    public void addProduct(Product product, Type type) {
+        if (products.containsKey(product)) {
+            System.out.println("This product is been registered");
+            return;
+        }
+        products.put(product, type);
+    }
+
+    public HashMap<Product, Type> getProducts() {
+        return new HashMap<>(products);
+    }
+
+    public void removeProduct(Product product) {
+        for (Product registeredProduct : products.keySet()) {
+            System.out.println(registeredProduct);
+            if (registeredProduct.equals(product)) {
+                products.remove(product);
+            }
+        }
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
     @Override
